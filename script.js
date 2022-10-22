@@ -92,30 +92,67 @@ function drawGame(){
     }
  }
 
- let touchHandler = function(event) {
-    let x = 0, y = 0;
-  
-    if (event.touches && event.touches[0]) {
-        x = event.touches[0].clientX;
-        y = event.touches[0].clientY;
-        yvelocity, xvelocity = y, x;
-        
-    } else if (event.originalEvent && event.originalEvent.changedTouches[0]) {
-        x = event.originalEvent.changedTouches[0].clientX;
-        y = event.originalEvent.changedTouches[0].clientY;
-        yvelocity, xvelocity = y, x;
-        
-    } else if (event.clientX && event.clientY) {
-        x = event.clientX;
-        y = event.clientY;
-        yvelocity, xvelocity = y, x;
+// Touch Test
+let pageWidth = window.innerWidth || document.body.clientWidth;
+let treshold = Math.max(1,Math.floor(0.01 * (pageWidth)));
+let touchstartX = 0;
+let touchstartY = 0;
+let touchendX = 0;
+let touchendY = 0;
+
+const limit = Math.tan(45 * 1.5 / 180 * Math.PI);
+//const gestureZone = document.getElementById('modalContent');
+
+canvas.addEventListener('touchstart', function(event) {
+    event.preventDefault()  
+  touchstartX = event.changedTouches[0].screenX;
+    touchstartY = event.changedTouches[0].screenY;
+}, false);
+
+canvas.addEventListener('touchend', function(event) {
+      event.preventDefault()
+    touchendX = event.changedTouches[0].screenX;
+    touchendY = event.changedTouches[0].screenY;
+    handleGesture(event);
+}, false);
+
+function handleGesture(e) {
+    let x = touchendX - touchstartX;
+    let y = touchendY - touchstartY;
+    let xy = Math.abs(x / y);
+    let yx = Math.abs(y / x);
+    if (Math.abs(x) > treshold || Math.abs(y) > treshold || snake.dx === 0 ) {
+        if (yx <= limit) {
+            if (x < 0) {
+                console.log("left");
+              if (xvelocity === 0){ 
+               xvelocity = -1;
+               yvelocity = 0;};
+            } else {
+                console.log("right");
+              if (xvelocity === 0){
+                xvelocity = 1;
+                yvelocity = 0;}
+            }
+        }
+        if (xy <= limit) {
+            if (y < 0 ) {
+                console.log("top");
+              if (yvelocity === 0){
+                yvelocity = -1;
+                xvelocity = 0;}
+            } else {
+           
+              console.log("bottom");
+              if (yvelocity === 0){
+                yvelocity = 1;
+                xvelocity = 0;
+            }}
+        }
+    } else {
+        console.log("tap");
     }
-    changeSnakePosition();
-  }
-  
-  window.addEventListener('touchstart', touchHandler, false);
-  window.addEventListener('touchmove', touchHandler, false);
-  window.addEventListener('touchend', touchHandler, false);
+}
 
  document.body.addEventListener('keydown', keyDown);
 
