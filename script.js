@@ -92,6 +92,32 @@ function drawGame(){
     }
  }
 
+ let touchHandler = function(event) {
+    let x = 0, y = 0;
+  
+    if (event.touches && event.touches[0]) {
+        x = event.touches[0].clientX;
+        y = event.touches[0].clientY;
+        yvelocity, xvelocity = y, x;
+        changeSnakePosition();
+    } else if (event.originalEvent && event.originalEvent.changedTouches[0]) {
+        x = event.originalEvent.changedTouches[0].clientX;
+        y = event.originalEvent.changedTouches[0].clientY;
+        yvelocity, xvelocity = y, x;
+        changeSnakePosition();
+    } else if (event.clientX && event.clientY) {
+        x = event.clientX;
+        y = event.clientY;
+        yvelocity, xvelocity = y, x;
+        changeSnakePosition();
+    }
+
+  }
+  
+  window.addEventListener('touchstart', touchHandler, false);
+  window.addEventListener('touchmove', touchHandler, false);
+  window.addEventListener('touchend', touchHandler, false);
+
  document.body.addEventListener('keydown', keyDown);
 
 function keyDown(event){
