@@ -98,20 +98,19 @@ function drawGame(){
     if (event.touches && event.touches[0]) {
         x = event.touches[0].clientX;
         y = event.touches[0].clientY;
-        yvelocity, xvelocity = y - y + 1, x - x + 1;
-        changeSnakePosition();
+        yvelocity, xvelocity = y, x;
+        
     } else if (event.originalEvent && event.originalEvent.changedTouches[0]) {
         x = event.originalEvent.changedTouches[0].clientX;
         y = event.originalEvent.changedTouches[0].clientY;
-        yvelocity, xvelocity = y - y + 1, x - x + 1;
-        changeSnakePosition();
+        yvelocity, xvelocity = y, x;
+        
     } else if (event.clientX && event.clientY) {
         x = event.clientX;
         y = event.clientY;
-        yvelocity, xvelocity = y - y + 1, x - x + 1;
-        changeSnakePosition();
+        yvelocity, xvelocity = y, x;
     }
-
+    changeSnakePosition();
   }
   
   window.addEventListener('touchstart', touchHandler, false);
